@@ -1,0 +1,107 @@
+** Design considerations for Exercises 1 and 2
+In a production product, I would invest additional effort into
+developing either a tail-call optimized approach or an iterative
+solution. A tree of sufficient depth could overflow the stack in my
+current implementation. While the JVM does not currently provide
+support for TCO at the bytecode level, there is a technique to add TCO
+when using streams as described by Venkat Subramaniam in
+[[https://www.amazon.com/Functional-Programming-Java-Harnessing-Expressions/dp/1937785467][Functional
+Programming in Java: Harnessing the Power Of Java 8 Lambda
+Expressions]]. Another alternative would be to utilize an iterative
+approach. This would involve the maintenance of a stack structure as
+the graph is walked.
+
+I considered declaring ~walkGraph~ and ~paths~ as static methods. In a
+real world project I would surface this for consideration by the team.
+
+** Proposed Amendments
+I captured a few minor items that cought my attention in the
+requirements document. My apologies in advance if I've misinterpreted
+the intent of any of these. Even the best of requirements can have
+gaps. The ability to identify and fill these gaps can be a valuable
+skill. In a real world project such concerns would be surfaced to the
+appropriate stakeholders.
+*** Proposed amendments to ~SWE Java Challenge.docx~ (original -> proposed)
+ - Line #24 ~public ArrayList walkGraph(GNode);~ -> ~public ArrayList walkGraph(GNode node);~
+ - Line #33 ~public ArrayList paths(GNode node);~ -> ~public ArrayList<ArrayList<GNode>> paths(GNode node);~
+** Exercises 1 & 2
+*** Environment
+- Java: openjdk-10.0.2
+- Gradle: 4.10
+*** How to run
+From within the ~exercises-1-and-2~ directory run:
+#+BEGIN_SRC
+gradle run
+#+END_SRC
+**** Expected Output
+#+BEGIN_SRC
+> Task :compileJava UP-TO-DATE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :run
+[A, B, E, F, C, G, H, I, D, J]
+[[A, B, E], [A, B, F], [A, C, G], [A, C, H], [A, C, I], [A, D, J]]
+BUILD SUCCESSFUL in 0s
+#+END_SRC
+*** How to test
+From within the ~exercises-1-and-2~ directory run:
+#+BEGIN_SRC
+gradle test
+#+END_SRC
+**** Expected Output
+#+BEGIN_SRC
+> Task :compileJava UP-TO-DATE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :compileTestJava UP-TO-DATE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test
+AppTest > testZeroLevelsDeep PASSED
+AppTest > testOneLevelDeep PASSED
+AppTest > testTwoLevelsDeep PASSED
+AppTest > testCanonicalExampleData PASSED
+AppTest > testFourLevelsDeep PASSED
+BUILD SUCCESSFUL in 1s
+#+END_SRC
+** Exercise 3
+*** Environment
+- Java: openjdk-10.0.2
+- Clojure: 1.9.0
+- Requires installation of "Command Line Tools" available at [[https://clojure.org/guides/getting_started][Getting
+  Started]]
+  - Optionally if using mac or linux, one can use the [[https://github.com/asdf-vm/asdf][ASDF Version
+    Manager]] to install the Clojure Command Line Tools using the [[https://github.com/halcyon/asdf-clojure.git][ASDF
+    Clojure plugin]]
+*** How to run
+From within the ~exercise-3~ directory run:
+#+BEGIN_SRC
+clj -m com.zeddworks.exercise-3 README.md
+#+END_SRC
+**** Expected Output
+#+BEGIN_SRC
+{"Files" 1,
+ "obtained" 1,
+ "compare" 1,
+ "provide" 1,
+ "org" 1,
+ "3" 4,
+ "zeddworks" 2,
+ "Run" 2,
+ "s" 1,
+ "Changed" 1,
+ "md" 1,
+...
+#+END_SRC
+*** How to test
+From within the ~exercise-3~ directory run:
+#+BEGIN_SRC
+clj -A:test:runner
+#+END_SRC
+**** Expected Output
+#+BEGIN_SRC
+Running tests in #{"test"}
+Testing com.zeddworks.exercise-3-test
+Ran 1 tests containing 1 assertions.
+0 failures, 0 errors.
+#+END_SRC
